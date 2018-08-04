@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+         
+    <context:component-scan base-package="com.tpf.entity"></context:component-scan>
+    <!-- 加载 hibernate的配置 定义sessionFactory -->  
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" >  
+        <property name="configLocation">  
+            <value>classpath:hibernate.cfg.xml</value>  
+        </property>  
+    </bean>  
+        
+    <!-- dao层 -->  
+    <bean id="deptdaoimpl" class="com.tpf.dao.impl.DeptDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>  
+    
+    <!-- 管理员登dao -->   
+    <bean id="admindaoimpl" class="com.tpf.dao.impl.AdminDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    <!-- 数据后台显示dao -->   
+    <bean id="kfxxdaoimpl" class="com.tpf.dao.impl.KfxxDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    <!-- 用户注册dao -->   
+    <bean id="userdaoimpl" class="com.tpf.dao.impl.UserDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    <!-- 订单dao -->   
+    <bean id="ticketdaoimpl" class="com.tpf.dao.impl.TicketDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    <!-- 房间配置dao -->   
+    <bean id="kfpzdaoimpl" class="com.tpf.dao.impl.KfpzDaoImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    
+    <!-- service层 -->  
+    <bean id="deptservice" class="com.tpf.service.impl.DeptServiceImpl" >  
+        <property name="idd" ref="deptdaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    <!-- 管理员登录service -->
+    <bean id="adminservice" class="com.tpf.service.impl.AdminServiceImpl" >  
+        <property name="idd" ref="admindaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean> 
+    
+    <!-- 客房service -->
+    <bean id="kfxxservice" class="com.tpf.service.impl.KfxxServiceImpl" >  
+        <property name="idd" ref="kfxxdaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>
+    
+    <!-- 用户注册service -->
+    <bean id="userservice" class="com.tpf.service.impl.UserServiceImpl" >  
+        <property name="idd" ref="userdaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>
+    <!-- 订单service -->
+    <bean id="ticketservice" class="com.tpf.service.impl.TicketServiceImpl" >  
+        <property name="idd" ref="ticketdaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>
+    <!-- 房间配置service -->
+    <bean id="kfpzservice" class="com.tpf.service.impl.KfpzServiceImpl" >  
+        <property name="idd" ref="kfpzdaoimpl" ></property>  
+        <property name="sessionFactory" ref="sessionFactory"></property>  
+    </bean>    
+    
+     
+    <!-- action层 -->  
+    <bean id="deptaction" class="com.tpf.action.DeptAction" >  
+        <property name="ids" ref="deptservice" ></property> 
+    </bean>  
+    
+    <!-- 管理员登录action -->
+    <bean id="adminaction" class="com.tpf.action.AdminAction" >  
+        <property name="ids" ref="adminservice" ></property> 
+        <property name="kfids" ref="kfxxservice"></property>
+    </bean> 
+    <!-- 用户退出action -->
+    <bean id="loginoutaction" class="com.tpf.action.LoginOutAction" >  
+    </bean> 
+    
+    <!-- 管理员退出action -->
+    <bean id="adminoutaction" class="com.tpf.action.AdminOutAction" >  
+    </bean> 
+    
+    <!-- 客房类action -->
+    <bean id="kfxxaction" class="com.tpf.action.KfxxAction" >  
+        <property name="ids" ref="kfxxservice" ></property> 
+    </bean>
+    
+    <!-- 用户注册action -->
+    <bean id="useraction" class="com.tpf.action.UserAction" >  
+        <property name="ids" ref="userservice" ></property> 
+    </bean>  
+    
+     <!-- 订单action -->
+    <bean id="ticketaction" class="com.tpf.action.TicketAction" >  
+        <property name="ids" ref="ticketservice" ></property> 
+    </bean>  
+    
+     <!-- 客房配置action -->
+    <bean id="kfpzaction" class="com.tpf.action.KfpzAction" >  
+        <property name="ids" ref="kfpzservice" ></property> 
+    </bean>  
+    
+    <!-- 事务的功能实现类-->  
+    <bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />  
+    </bean>  
+    
+     <!-- 配置 HibernateTemplate -->
+     <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+     </bean>
+      
+    <!-- 把事务封装好的一个 面板  -->  
+    <tx:advice id="txAdvice" transaction-manager="txManager" >  
+        <tx:attributes>  
+            <tx:method name="save(..)" read-only= "true" />   
+            <tx:method name="*" />  
+        </tx:attributes>  
+    </tx:advice>  
+    <!-- 封装结束 -->  
+          
+    <!-- 切入事务开始  织入  -->  
+    <aop:config>  
+        <aop:pointcut id="pointcut" expression="execution(* com.tpf.dao.impl.*.*(..))" />   
+        <aop:advisor pointcut-ref="pointcut" advice-ref="txAdvice"/>   
+    </aop:config>  
+    <!-- 切入事务结束 -->  
+</beans>  

@@ -1,0 +1,31 @@
+<!DOCTYPE hibernate-configuration PUBLIC  
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"  
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">  
+<hibernate-configuration>  
+<session-factory>  
+    <!-- 数据库连接信息 -->  
+    <property name="connection.driver_class">  
+        com.mysql.jdbc.Driver  
+    </property>  
+    <property name="connection.url">  
+        jdbc:mysql://localhost:3306/hotelmanager?useUnicode=true&amp;characterEncoding=UTF-8  
+    </property>  
+    <property name="connection.username">root</property>  
+    <property name="connection.password">tpf123456</property>  
+  
+    <!-- 数据库方言 -->  
+    <property name="dialect">  
+        org.hibernate.dialect.MySQLDialect  
+    </property>   
+    <!-- 是否显示sql语句 -->  
+    <property name="show_sql">true</property> 
+    <!-- 格式化sql语句-->     
+    <property name="format_sql">true</property>
+    <mapping resource="com/tpf/entity/Dept.hbm.xml" />
+    <mapping resource="com/tpf/entity/Admin.hbm.xml" />  
+    <mapping resource="com/tpf/entity/Kfxx.hbm.xml" />
+    <mapping resource="com/tpf/entity/User.hbm.xml" />  
+	<mapping resource="com/tpf/entity/Ticket.hbm.xml" />  
+	<mapping resource="com/tpf/entity/Kfpz.hbm.xml" />       
+</session-factory>  
+</hibernate-configuration>  

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC   
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  
+<!--  Dept实体的映射文件  
+      把实体类的属性和表中的字段映射在一起  
+ -->  
+<hibernate-mapping package="com.tpf.entity">  
+  
+    <class name="com.tpf.entity.Dept" table="dept">  
+        <!-- 配置主键 -->  
+        <id name="deptno"   >  
+            <!-- 主键生成策略 -->  
+            <generator class="increment"/>  
+        </id>  
+        <property name="dname"  /> 
+        <property name="loc" />  
+          
+    </class>  
+  
+</hibernate-mapping>  

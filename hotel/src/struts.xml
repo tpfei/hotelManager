@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"  
+    "http://struts.apache.org/dtds/struts-2.3.dtd">  
+  
+<struts>  
+    <!-- 设置编码方式 -->  
+    <constant name="struts.i18n.encoding" value="utf-8"></constant>      
+    <package name="default"  extends="struts-default"  namespace="/" >  
+        
+    	<interceptors>  
+    		<interceptor name="loginInterceptor" class="com.tpf.interceptor.LoginInterceptor"/> 
+    		<interceptor name="adminInterceptor" class="com.tpf.interceptor.AdminInterceptor"/>	
+<!--             <interceptor-stack name="loginStack">   
+            	<interceptor-ref name="defaultStack"></interceptor-ref>  
+            </interceptor-stack> -->
+		</interceptors>
+								    
+        <action name="*dept" class="deptaction" method="{1}">  
+            <result name="zhanshi">list.jsp</result> 
+            <result name="find" type="chain">showdept</result>
+            <result name="prepup">update.jsp</result>              
+        </action>  
+                
+       <!--  管理员-->         
+       <action name="*admin" class="adminaction" method="{1}">  
+       		<result name="loginSuccess">WEB-INF/main.jsp</result>
+       		<result name="login">login.jsp</result>
+       		<result name="top">WEB-INF/top.jsp</result>
+            <result name="left">WEB-INF/left.jsp</result>
+          	<interceptor-ref name="adminInterceptor">
+          		<param name="excludeMethods">login</param>
+          	</interceptor-ref>            	          	
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action>
+        
+        <!--  客房-->
+        <action name="*kfxx" class="kfxxaction" method="{1}">  
+        	<result name="showkfxx">WEB-INF/right.jsp</result>
+        	<result name="addpage">WEB-INF/addkfxx.jsp</result>
+        	<result name="addkfxx">WEB-INF/main.jsp</result>
+        	<result name="book" type="chain">book_tkkfxx</result>
+        	<result name="book_ticket">WEB-INF/bookTicket.jsp</result>
+        	<result name="updatekfxx" type="chain">showkfxx</result>
+        	<result name="deletekfxx" type="chain">showkfxx</result>
+       		<result name="deletekfxxs" type="chain">showkfxx</result>
+       		<result name="prepup">WEB-INF/updatekfxx.jsp</result>
+       		<result name="login">error.jsp</result>
+       		<!--     过滤器         	-->
+            <interceptor-ref name="loginInterceptor">
+             	<param name="excludeMethods">show,delete,addpage,prepup,update,save</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action>
+        
+         <!--  客房配置-->
+        <action name="*kfpz" class="kfpzaction" method="{1}">  
+            <result name="showkfpz">WEB-INF/roomconf.jsp</result> 
+            <result name="addpage">WEB-INF/addkfpz.jsp</result>
+            <result name="addkfpz">WEB-INF/main.jsp</result>
+            <result name="deletekfpz" type="chain">showkfpz</result>            
+            <result name="updatekfpz" type="chain">showkfpz</result>
+            <result name="prepup">WEB-INF/updatekfpz.jsp</result>             
+        </action>   
+        
+        <!--  订票-->
+        <action name="*ticket" class="ticketaction" method="{1}">  
+        	<result name="saveticket">htIndexLogin.jsp</result>             
+        	<result name="showuserticket">WEB-INF/ticketList.jsp</result> 
+        	<result name="showallticket">WEB-INF/ticket.jsp</result>
+        	<result name="deleteticket" type="chain">show_usrticket</result>
+         	<result name="updateticket" type="chain">show_allticket</result>         	 
+         	<result name="prepup">WEB-INF/updateticket.jsp</result>       	
+         	<result name="login">error.jsp</result>
+			<!--          	 过滤器         	 -->
+           	<interceptor-ref name="loginInterceptor">
+             	<param name="excludeMethods">delete,save,show_all,update,prepup</param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action> 
+        
+        <!--  用户-->
+        <action name="*user" class="useraction" method="{1}">   
+       		<result name="userRegister">htIndex.jsp</result>
+       		<result name="find">htIndex.jsp</result>
+       		<result name="loginSuccess">htIndexLogin.jsp</result>
+            <result name="login">htIndex.jsp</result>  
+            <interceptor-ref name="loginInterceptor">
+            	<param name="excludeMethods">register,login</param>
+            </interceptor-ref> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action> 
+        
+        <action name="*loginout" class="loginoutaction" method="{1}">  
+        	<result name="suc">htIndex.jsp</result>
+        	<result name="eroor">htIndex.jsp</result>
+        </action>
+                
+        <action name="*adminout" class="adminoutaction" method="{1}">  
+        	<result name="suc">login.jsp</result>
+        	<result name="eroor">login.jsp</result>
+        </action>                                  
+    </package>  
+</struts>  
